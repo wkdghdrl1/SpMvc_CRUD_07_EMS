@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link rel="styleSheet" type="text/css"
+	href="{rootPath}/css/list.css?ver=20190725"/>
+<script>
+	$(function() {
+		$(".ems_row").click(function() {
+			let ems_seq = $(this).attr("data-seq")
+			location.href ="${rootPath}/ems/view?ems_seq=" + ems_seq	
+		})
+	})
+</script>
+<table class="list">
+		<tr>
+		<th>NO</th>
+		<th>받는Email</th>
+		<th>보내는사람</th>
+		<th>제목</th>
+		<th>작성일자</th>
+		<th>작성시각</th>
+		</tr>
+		
+		<c:choose>
+			<c:when test="${empty EMAILSEARCH}">
+				<tr>
+					<td colspan="6"> 내용이 없습니다.</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach items="${EMAILSEARCH}" var="VO" varStatus="s">
+					<tr class="ems_row" data-seq="${VO.ems_seq}">
+						<td>${VO.ems_seq}</td>
+						<td>${VO.ems_to_email}</td>
+						<td>${VO.ems_from_name}</td>
+						<td>${VO.ems_subject}</td>
+						<td>${VO.ems_send_date}</td>
+						<td>${VO.ems_send_time}</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+</table>
+
+<!-- inline stlye 지정방식 -->
+<div class="btn-box right" style="padding-right: 25px">
+	<!-- inline script 지정방식 -->
+	<button id="btn-input"
+			onclick="location.href='${rootPath}/ems/write'"
+	 		class="bz-btn input">메일 보내기</button>
+</div>	
