@@ -1,6 +1,7 @@
 package com.biz.ems.service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.biz.ems.mapper.EmailDao;
 import com.biz.ems.model.EmailVO;
-import com.biz.ems.model.PagingVO;
 
 @Service
 public class SendMailService {
@@ -90,10 +90,6 @@ public class SendMailService {
 			return ret;
 		}
 
-		public List<EmailVO> selectAll() {
-			List<EmailVO> emailList = eDao.selectAll();
-			return emailList;
-		}
 
 		public EmailVO findBySeq(long ems_seq) {
 			EmailVO emailVO = eDao.findBySeq(ems_seq);
@@ -130,14 +126,16 @@ public class SendMailService {
 			return emailList;	
 		}
 
-		public int selectTotalPaging() {
-			int ret = eDao.selectTotalPaging();
-			return ret;
+
+
+		public List<EmailVO> selectAll(HashMap<String,Object> option) {
+			List<EmailVO> lists = eDao.selectAll(option);
+			return lists;
 		}
 
-		public List<EmailVO> selectPaging(PagingVO pagingVO) {
-			List<EmailVO> lists = eDao.selectPaging(pagingVO);
-			return lists;
+		public int countArticle() {
+			// TODO Auto-generated method stub
+			return eDao.countArticle();
 		}
 
 

@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>EMS</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css"
 	href="${rootPath}/resources/css/main.css?ver=20190808">
 <link rel="stylesheet" type="text/css"
@@ -42,6 +43,9 @@
 			</c:when>
 			<c:when test="${BODY == 'SEARCH' }">
 				<%@ include file="/WEB-INF/views/body/ems/search.jspf"%>
+			</c:when>
+			<c:when test="${BODY == 'LIST' }">
+				<%@ include file="/WEB-INF/views/body/ems/list.jspf"%>
 			</c:when>
 				<c:otherwise>
 					<%@ include file="/WEB-INF/views/body/ems/list.jspf"%>

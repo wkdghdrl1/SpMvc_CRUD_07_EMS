@@ -3,6 +3,7 @@ package com.biz.ems.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.biz.ems.model.EmailVO;
 import com.biz.ems.service.FileService;
+import com.biz.ems.service.Pager;
 import com.biz.ems.service.SendMailService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,11 +41,25 @@ public class EmsController {
 		return new EmailVO();
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/list", method=RequestMethod.POST)
-	public String list(Model model) {
-		return "home";
+	@RequestMapping(value = "/list", method=RequestMethod.GET)
+	public String list(
+						@RequestParam(defaultValue = "1")int curPage, Model model) {
+			int count = xMailService.countArticle();
+			Pager pager = new Pager(count,curPage);
+			int start = pager.getPageBegin();
+			int end = pager.getPageEnd();
+			HashMap<String,Object> option = new HashMap<>();
+			option.put("start", start);
+			option.put("end", end);
 		
+			List<EmailVO> emailList = xMailService.selectAll(option);
+			
+			
+			model.addAttribute("pager",pager);
+			model.addAttribute("LIST",emailList);
+			model.addAttribute("BODY","LIST");
+		//??? 
+		return "home";
 	}
 	
 	

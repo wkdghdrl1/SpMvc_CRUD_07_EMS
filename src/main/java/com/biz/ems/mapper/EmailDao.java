@@ -1,5 +1,6 @@
 package com.biz.ems.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -9,12 +10,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 import com.biz.ems.model.EmailVO;
-import com.biz.ems.model.PagingVO;
 
 public interface EmailDao {
-	
-	@Select(" SELECT * FROM tbl_ems ")
-	public List<EmailVO> selectAll();
 	
 	@Select(" SELECT * FROM tbl_ems WHERE ems_seq = #{ems_seq} ")
 	public EmailVO findBySeq(long ems_seq);
@@ -53,12 +50,13 @@ public interface EmailDao {
 	public List<EmailVO> findByFromName(String search);
 	
 	
-    @Select("( SELECT *  FROM  " 
-    		+ " ( SELECT ROWNUM RNUM, P.* FROM "
-    		+ "( SELECT * FROM tbl_ems ORDER BY REGDATE DESC ) P ) "
-    		+ " WHERE RNUM BETWEEN #{start} AND #{last} ")
-	public List<EmailVO> selectPaging(PagingVO pagingVO); 
+	@Select("SELECT * FROM ( SELECT rownum AS rnum, A.* FROM ( "
+	         +" SELECT * FROM tbl_ems "
+	         + " ORDER BY ems_send_date DESC, ems_send_time DESC ) A ) "
+	         + " WHERE rnum BETWEEN #{start} AND #{end} ")
+	public List<EmailVO> selectAll(HashMap<String,Object> option); 
+
     
-    @Select (" SELECT COUNT(*) FROM tbl_ems ")
-    public int selectTotalPaging();
+    @Select(" SELECT COUNT(*) FROM tbl_ems ")
+	public int countArticle();
 }
