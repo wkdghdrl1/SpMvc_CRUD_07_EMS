@@ -8,6 +8,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,7 +18,10 @@ import org.springframework.stereotype.Service;
 import com.biz.ems.mapper.EmailDao;
 import com.biz.ems.model.EmailVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class SendMailService {
 	
 		@Autowired
@@ -33,7 +37,7 @@ public class SendMailService {
 		
 		public void sendMail(EmailVO mailVO) {
 			
-			String from_eamil = mailVO.getEms_from_email();
+			String from_email = mailVO.getEms_from_email();
 			String to_email = mailVO.getEms_to_email(); 
 			String subject = mailVO.getEms_subject();
 			String content = mailVO.getEms_content();
@@ -48,7 +52,7 @@ public class SendMailService {
 			
 			try {
 				mHelper = new MimeMessageHelper(message, true, "UTF-8");
-				mHelper.setFrom(from_eamil);
+				mHelper.setFrom(from_email);
 				mHelper.setTo(to_email);
 				mHelper.setSubject(subject);
 				
@@ -106,37 +110,20 @@ public class SendMailService {
 			return 0;
 		}
 
-		public List<EmailVO> findByFromName(String search) {
-			List<EmailVO> emailList = eDao.findByFromName(search);
-			return emailList;
-		}
-
-		public List<EmailVO> findBySubject(String search) {
-			List<EmailVO> emailList = eDao.findBySubject(search);
-			return emailList;
-		}
-
-		public List<EmailVO> findByContent(String search) {
-			List<EmailVO> emailList = eDao.findByContent(search);
-			return emailList;
-		}
-
-		public List<EmailVO> findByToEmail(String search) {
-			List<EmailVO> emailList = eDao.findByToEmail(search);
-			return emailList;	
-		}
-
-
 
 		public List<EmailVO> selectAll(HashMap<String,Object> option) {
+			option.put("keyword", "%"+option.get("keyword")+"%");
 			List<EmailVO> lists = eDao.selectAll(option);
 			return lists;
 		}
 
-		public int countArticle() {
-			// TODO Auto-generated method stub
-			return eDao.countArticle();
+		public int countArticle(HashMap<String, String> s_option) {
+			
+			s_option.put("keyword", "%"+ s_option.get("keyword")+"%");
+			return eDao.countArticle(s_option);
 		}
+
+	
 
 
 }

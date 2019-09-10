@@ -4,13 +4,21 @@
 <link rel="styleSheet" type="text/css"
 	href="{rootPath}/css/list.css?ver=20190725"/>
 <script>
+	
 	$(function() {
 		$(".ems_row").click(function() {
 			let ems_seq = $(this).attr("data-seq")
 			location.href ="${rootPath}/ems/view?ems_seq=" + ems_seq	
 		})
 	})
+	
 </script>
+
+
+
+
+	
+
 <table class="list">
 		<tr>
 		<th>NO</th>
@@ -41,7 +49,7 @@
 			</c:otherwise>
 		</c:choose>
 </table>
-
+	
 <!-- inline stlye 지정방식 -->
 <div class="btn-box right" style="padding-right: 25px">
 	<!-- inline script 지정방식 -->

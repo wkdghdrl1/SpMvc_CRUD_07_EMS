@@ -31,19 +31,8 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(@RequestParam(defaultValue = "1") int curPage, Model model) {
-		int count = xMailService.countArticle();
-		Pager pager = new Pager(count,curPage);
-		int start = pager.getPageBegin();
-		int end = pager.getPageEnd();
-		HashMap<String,Object> option = new HashMap<>();
-		option.put("start", start);
-		option.put("end", end);
-		
-		List<EmailVO> emailList = xMailService.selectAll(option);
-		model.addAttribute("pager",pager);
-		model.addAttribute("LIST", emailList);
-		
+	public String home(
+			 Model model) {
 		return "home";
 	}
 	

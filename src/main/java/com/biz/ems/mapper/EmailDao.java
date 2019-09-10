@@ -7,9 +7,12 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 import com.biz.ems.model.EmailVO;
+
+import lombok.extern.slf4j.Slf4j;
 
 public interface EmailDao {
 	
@@ -37,26 +40,12 @@ public interface EmailDao {
 	@Delete(" DELETE FROM tbl_ems WHERE ems_seq = #{ems_seq} ")
 	public int delete(long ems_seq);
 	
-	@Select(" SELECT * FROM tbl_ems WHERE ems_to_email LIKE '%' ||  #{ems_to_email} || '%' ")
-	public List<EmailVO> findByToEmail(String search);
 	
-	@Select(" SELECT * FROM tbl_ems WHERE ems_content LIKE '%' || #{ems_content} || '%' ")
-	public List<EmailVO> findByContent(String search);
-	
-	@Select(" SELECT * FROM tbl_ems WHERE ems_subject LIKE '%' || #{ems_subject} || '%' ")
-	public List<EmailVO> findBySubject(String search);
-
-	@Select(" SELECT * FROM tbl_ems WHERE ems_from_name LIKE '%' || #{ems_from_name} || '%' ")
-	public List<EmailVO> findByFromName(String search);
-	
-	
-	@Select("SELECT * FROM ( SELECT rownum AS rnum, A.* FROM ( "
-	         +" SELECT * FROM tbl_ems "
-	         + " ORDER BY ems_send_date DESC, ems_send_time DESC ) A ) "
-	         + " WHERE rnum BETWEEN #{start} AND #{end} ")
+	@SelectProvider(type=BBsSQL.class,method="bbs_list_all")
 	public List<EmailVO> selectAll(HashMap<String,Object> option); 
 
-    
-    @Select(" SELECT COUNT(*) FROM tbl_ems ")
-	public int countArticle();
+
+	
+    @SelectProvider(type=BBsSQL.class,method="bbs_select_count_sql")
+	public int countArticle(HashMap<String, String> s_option);
 }
