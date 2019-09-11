@@ -37,7 +37,6 @@ public class Pager {
 		 //블록의 개수 계산
 		 public void setTotBlock() {
 			 totBlock = (int)Math.ceil(totPage*1.0 / BLOCK_SCALE);
-			 System.out.println("톳블록 : " + totBlock );
 		 }
 		 
 		 public void setBlockRange() {

@@ -41,11 +41,11 @@ public interface EmailDao {
 	public int delete(long ems_seq);
 	
 	
-	@SelectProvider(type=BBsSQL.class,method="bbs_list_all")
+	@SelectProvider(type=EmailSQL.class,method="bbs_list_all")
 	public List<EmailVO> selectAll(HashMap<String,Object> option); 
 
 
 	
-    @SelectProvider(type=BBsSQL.class,method="bbs_select_count_sql")
+    @SelectProvider(type=EmailSQL.class,method="bbs_select_count_sql")
 	public int countArticle(HashMap<String, String> s_option);
 }
